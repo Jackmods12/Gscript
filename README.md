@@ -33,7 +33,7 @@ Linux:
 func new set($a)
   loop
     print "Text"
-    if #a == 1 then
+    if $a == 1 then
       print "True"
     endif
     else
