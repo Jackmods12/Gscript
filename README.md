@@ -1,6 +1,6 @@
 # Gscript
 
-** Examples will be coming shortly :) **
+**Examples will be coming shortly :)**
 
 A scripting language made for a upcoming project to build a operating system ontop of the linux kernal to act more like windows than linux
 
