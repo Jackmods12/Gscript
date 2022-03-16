@@ -58,7 +58,7 @@ print $b
 ## Http Get and Post
 
 ```
-#httpGET "https://pastebin.com/raw/YbvZHGYP" $b
+httpGET "https://pastebin.com/raw/YbvZHGYP" $b
 httpPOST "https://pastebin.com/raw/YbvZHGYP" "Baby" $b
 
 print $b
