@@ -9,8 +9,8 @@ import requests
 import sys
 
 import time
-fname = "test.gs"
-#fname = sys.argv[1]
+#fname = "test.gs"
+fname = sys.argv[1]
 #print(fname)
 
 file = open(fname).read() 
@@ -133,15 +133,30 @@ def decode(tokens):
                 doASSAIGN_VAR(tokens[i+1][4:],"STRING:\""+input()+"\"")
             i+=2
         elif tokens[i] == "IF":
-            if tokens[i] + " DATA " + tokens[i+2] + " DATA " + tokens[i+4] == "IF DATA EQEQ DATA THEN":
+            if tokens[i] + " DATA " + "OPER" + " DATA " + tokens[i+4] == "IF DATA OPER DATA THEN":
                 data1 = tokens[i+1]
                 data2 = tokens[i+3]
                 data1 = getTYPE(data1)
                 data2 = getTYPE(data2)
+                if tokens[i+2] == "EQEQ": 
+                    if data1[0] == data2[0]:
+                        cur = 0
+                        i += 5
+                elif tokens[i+2] == "NOTEQ": 
+                    if data1[0] != data2[0]:
+                        cur = 0
+                        i += 5
+                elif data1[1] == "INT":
+                    if tokens[i+2] == "GR":
+                        if data1[0] > data2[0]:
+                            cur = 0
+                            i += 5
+                elif data1[1] == "INT":
+                    if tokens[i+2] == "LS":
+                        if data1[0] < data2[0]:
+                            cur = 0
+                            i += 5
 
-                if data1[0] == data2[0]:
-                    cur = 0
-                    i += 5
                 else:
                     for e in range(i+2,len(tokens)):
                         if tokens[e] == "ENDIF":
@@ -560,6 +575,54 @@ def lexer(code=code):
             else:
                 tokens.append("EQUALS")
             keyword = ""
+        elif keyword == "!" and quote == 0:
+            
+            if expr != "" and isexpr == 1:
+                tokens.append(TT_EXPR+expr)
+                expr = ""
+                isexpr = 0
+            elif expr != "" and isexpr == 0:
+                tokens.append(TT_INT+expr)
+                expr = ""
+                isexpr = 0
+            
+            if var != "":
+                tokens.append("VAR:"+var)
+                var = ""
+                varStart = 0
+            if tokens[-1] == "EQUALS":
+                tokens[-1] = "NOTEQ"
+            else:
+                tokens.append("EQUALS")
+            keyword = ""
+        elif keyword == "<" and quote == 0:
+            
+            if expr != "" and isexpr == 1:
+                tokens.append(TT_EXPR+expr)
+                expr = ""
+                isexpr = 0
+            elif expr != "" and isexpr == 0:
+                tokens.append(TT_INT+expr)
+                expr = ""
+                isexpr = 0
+
+            tokens.append("LS")
+            keyword = ""
+
+        elif keyword == ">" and quote == 0:
+            
+            if expr != "" and isexpr == 1:
+                tokens.append(TT_EXPR+expr)
+                expr = ""
+                isexpr = 0
+            elif expr != "" and isexpr == 0:
+                tokens.append(TT_INT+expr)
+                expr = ""
+                isexpr = 0
+
+            tokens.append("GR")
+            keyword = ""
+
         elif keyword == "func " and quote == 0:
             funcStart = 1
             func += keyword
@@ -606,7 +669,7 @@ def lexer(code=code):
         elif keyword == "\t" and quote == 0:
             keyword = ""
     
-       #print(tokens)
+        #print(tokens)
     #print(expr)    
     #print(var)
 
