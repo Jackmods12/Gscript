@@ -22,7 +22,7 @@ gscript filename
 ## How to install a GScript
 ```
 Window:
-  Right Click install.py and Run As Administrator
+  Installer coming soon.
 Linux:
   Open terminal in the folder where install.py is the run "sudo python3 install.py"
 ```
